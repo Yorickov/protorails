@@ -1,17 +1,7 @@
 class ArticlesController < Framework::Controller
   def index
-    [
-      200,
-      { 'Content-Type' => 'text/plain' },
-      ["All articles\n"]
-    ]
+    # render 'articles/list'
   end
 
-  def create
-    [
-      201,
-      { 'Content-Type' => 'text/plain' },
-      ["Article created\n"]
-    ]
-  end
+  def create; end
 end
