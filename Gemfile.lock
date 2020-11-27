@@ -1,13 +1,19 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    pg (1.2.3)
     rack (2.2.3)
+    sequel (5.38.0)
+    sqlite3 (1.4.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  pg (~> 1.2)
   rack (~> 2.2)
+  sequel (~> 5.38)
+  sqlite3 (~> 1.4)
 
 BUNDLED WITH
    2.1.4

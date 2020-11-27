@@ -1,3 +1,6 @@
+require 'rubygems'
+require 'bundler/setup'
+
 require 'pathname'
 require_relative 'framework/application'
 

@@ -6,6 +6,14 @@
   </head>
   <body>
     <h1>This is index page</h1>
+
     <p><%= @time %></p>
+    <p><%= @articles.size %></p>
+
+    <ul>
+      <% @articles.each do |article| %>
+        <li><%= article.title %> (<%= article.body %>)</li>
+      <% end %>
+    </ul>
   </body>
 </html>
