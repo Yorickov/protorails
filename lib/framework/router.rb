@@ -24,10 +24,15 @@ module Framework
     private
 
     def add_route(method, path, handler)
-      action = handler.split('#').last
-      route = Route.new(method, path, Controller, action)
+      controller_name, action = handler.split('#')
+      controller = controller_from_string(controller_name)
+      route = Route.new(method, path, controller, action)
 
       @routes.push(route)
+    end
+
+    def controller_from_string(controller_name)
+      Object.const_get("#{controller_name.capitalize}Controller")
     end
   end
 end

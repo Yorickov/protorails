@@ -10,6 +10,11 @@ module Framework
       @router = Router.new
     end
 
+    def bootstrap!
+      require_controllers
+      require_routes
+    end
+
     def routes(&block)
       @router.instance_eval(&block)
     end
@@ -30,6 +35,16 @@ module Framework
     end
 
     private
+
+    def require_controllers
+      Dir["#{Framework.root}/app/**/*.rb"]
+        .sort
+        .each { |file| require file }
+    end
+
+    def require_routes
+      require Framework.root.join('config/routes')
+    end
 
     def make_response(controller, action)
       controller.make_response(action)
