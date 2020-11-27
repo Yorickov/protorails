@@ -1,3 +1,5 @@
+require 'erb'
+
 module Framework
   class View
     VIEW_BASE_PATH = 'app/views'.freeze
@@ -6,8 +8,10 @@ module Framework
       @env = env
     end
 
-    def render
-      File.read(template_path)
+    def render(binding)
+      template = File.read(template_path)
+
+      ERB.new(template).result(binding)
     end
 
     private
@@ -27,7 +31,7 @@ module Framework
     def template_path
       path = template || [controller.name, action].join('/')
 
-      Framework.root.join(VIEW_BASE_PATH, "#{path}.html")
+      Framework.root.join(VIEW_BASE_PATH, "#{path}.html.erb")
     end
   end
 end

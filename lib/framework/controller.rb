@@ -38,7 +38,7 @@ module Framework
     end
 
     def render_body
-      View.new(@request.env).render
+      View.new(@request.env).render(binding)
     end
 
     def render(template)
