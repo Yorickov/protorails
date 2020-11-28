@@ -11,3 +11,5 @@ gem "rack", "~> 2.2"
 gem "sequel", "~> 5.38"
 
 gem "sqlite3", "~> 1.4"
+
+gem "gyoku", "~> 1.3"
