@@ -3,6 +3,7 @@ require 'bundler/setup'
 
 require 'pathname'
 require_relative 'framework/application'
+require_relative 'framework/middleware/logger'
 
 module Framework
   class << self
