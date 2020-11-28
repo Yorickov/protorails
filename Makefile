@@ -11,7 +11,7 @@ lint:
 	bundle exec rubocop
 
 get:
-	curl localhost:9292/articles -v
+	curl localhost:9292/articles$(P) -v
 
 post:
 	curl localhost:9292/articles -v -X POST -d ''

@@ -2,33 +2,43 @@ require_relative 'router/route'
 
 module Framework
   class Router
+    attr_reader :routes
+
     def initialize
       @routes = []
     end
 
-    def get(path, handler)
-      add_route(:get, path, handler)
+    def get(path, handler, path_name)
+      add_route(:get, path, handler, path_name)
     end
 
-    def post(path, handler)
-      add_route(:post, path, handler)
+    def post(path, handler, path_name)
+      add_route(:post, path, handler, path_name)
     end
 
-    def find_route(request)
+    def match(request)
       method = request.request_method.downcase.to_sym
       path = request.path_info
 
-      @routes.find { |route| route.match?(method, path) }
+      routes.find { |route| route.match?(method, path) }
+    end
+
+    def generate(name, attributes = {})
+      routes.each do |route|
+        url = route.generate(name, attributes)
+        return url if url
+      end
+      nil
     end
 
     private
 
-    def add_route(method, path, handler)
+    def add_route(method, path, handler, path_name)
       controller_name, action = handler.split('#')
       controller = controller_from_string(controller_name)
-      route = Route.new(method, path, controller, action)
+      route = Route.new(method, path, controller, action, path_name)
 
-      @routes.push(route)
+      routes.push(route)
     end
 
     def controller_from_string(controller_name)

@@ -8,7 +8,7 @@ module Framework
   class Application
     include Singleton
 
-    attr_reader :db
+    attr_reader :db, :router
 
     def initialize
       @router = Router.new
@@ -22,19 +22,20 @@ module Framework
     end
 
     def routes(&block)
-      @router.instance_eval(&block)
+      router.instance_eval(&block)
     end
 
     def call(env)
       request = Rack::Request.new(env)
       response = Rack::Response.new
 
-      route = @router.find_route(request)
+      route = @router.match(request)
       if route
         controller = route.controller.new(request, response)
         action = route.action
+        attributes = route.attributes
 
-        make_response(controller, action)
+        make_response(controller, action, attributes)
       else
         make_exception(404, 'Not Found')
       end
@@ -52,8 +53,8 @@ module Framework
       require Framework.root.join('config/routes')
     end
 
-    def make_response(controller, action)
-      controller.make_response(action)
+    def make_response(controller, action, attributes)
+      controller.make_response(action, attributes)
     end
 
     def make_exception(error_status, message)

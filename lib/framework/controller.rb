@@ -10,15 +10,24 @@ module Framework
       @response = response
     end
 
-    def make_response(action)
-      @request.env['framework.controller'] = self
-      @request.env['framework.action'] = action
+    def make_response(action, attributes)
+      request.env['framework.controller'] = self
+      request.env['framework.action'] = action
+      request.env['framework.attributes'] = attributes
 
       set_default_headers
       send(action)
       write_response
 
-      @response.finish
+      response.finish
+    end
+
+    def status(status_code)
+      response.status = status_code
+    end
+
+    def headers
+      response
     end
 
     private
@@ -27,14 +36,18 @@ module Framework
       self.class.name.match('(?<name>.+)Controller')[:name].downcase
     end
 
+    def params
+      request.params.merge(@request.env['framework.attributes'])
+    end
+
     def set_default_headers
-      @response['Content-Type'] = 'text/html'
+      headers['Content-Type'] = 'text/html'
     end
 
     def write_response
       body = render_body
 
-      @response.write(body)
+      response.write(body)
     end
 
     def render_body
@@ -42,7 +55,7 @@ module Framework
     end
 
     def render(template)
-      @request.env['framework.template'] = template
+      request.env['framework.template'] = template
     end
   end
 end
